@@ -16,6 +16,9 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
+COPY . .
+RUN npm run build
+
 #2단계 : 실행 환경(Nginx 환경 연결)
 FROM nginx:stable-alpine
 
@@ -28,4 +31,4 @@ COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 # nginx를 실행하면 백그라운드 실행 , nginx를 컨테이너가 종료되도 실행 될 수 있도록
 # 컨테이너가 시작될 때 nginx가 종료되지 않게 설정
-CMD ["nginx","-g","daemon off"]
+CMD ["nginx","-g","daemon off;"]
