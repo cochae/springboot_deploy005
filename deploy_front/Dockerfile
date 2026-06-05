@@ -24,7 +24,7 @@ FROM nginx:stable-alpine
 
 # React에 빌드 결과물은 Nginx 정적 폴더로 복사
 # COPY --from=build /app/dist /usr/share/nginx/html
-COPY app/dist /usr/share/nginx/html
+COPY dist /usr/share/nginx/html
 
 #Nginx기본 설정 대신에 사용할 설정파일이 있다면 추가 COPY해주면 된다
 #COPY nginx.conf /etc/nginx/conf.d/default.conf
