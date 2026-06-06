@@ -1,11 +1,31 @@
-COPY package.json ./
-RUN npm install
+version: "3.9"
 
-COPY . .
-RUN npm run build
+services:
+  # Spring Boot 백엔드 설정
+  springboot_server:
+    container_name: springboot_server
+    build:
+      context: ./deploy005_springboot_react
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    networks:
+      - app-network
 
-FROM nginx:stable-alpine
+  # React + Nginx 프론트엔드 설정
+  react_front:
+    container_name: react_front
+    build:
+      context: ./deploy_front
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - springboot_server
+    networks:
+      - app-network
 
-EXPOSE 80
-
-CMD ["nginx","-g","daemon off;"]
+# 두 컨테이너가 공유할 가상 네트워크 통로
+networks:
+  app-network:
+    driver: bridge
